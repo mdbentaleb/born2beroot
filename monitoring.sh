@@ -20,9 +20,7 @@ udm=$(df -BM | grep '^/dev/' | grep -v '/boot$' | awk '{um += $3} END {print um}
 pdm=$(df -BM | grep '^/dev/' | grep -v '/boot$' | awk '{um += $3} {am += $2} END {printf("%d"), um/am*100}')
 
 #--------------CPU load-------------
-acpu=$(vmstat 1 2 | tail -1 | awk '{printf $15}')
-ucpu=$(expr 100 - $acpu)
-pucpu=$(printf "%.1f%%" $ucpu)
+ucpu=$(grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {print usage}' | awk '{printf "%.1f", $1}')
 
 #--------------Last boot------------
 lb=$(uptime -s | cut -d: -f1,2)
@@ -49,7 +47,7 @@ wall " #Architecture: $archit
 	#vCPU : $vcpu
 	#Memory Usage: $urm/${arm}MB ($prm%)
 	#Disk Usage: $udm/${adm}Gb ($pdm%)
-	#CPU load: $pucpu
+	#CPU load: $ucpu%
 	#Last boot: $lb
 	#LVM use: $lvm
 	#Connections TCP : $tcpc ESTABLISHED
