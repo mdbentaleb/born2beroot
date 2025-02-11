@@ -42,6 +42,7 @@ maca=$(ip link | awk '$1 == "link/ether" {print $2}')
 scmd=$(journalctl _COMM=sudo -q | grep 'COMMAND' | wc -l)
 
 
+
 wall " #Architecture: $archit
 	#CPU physical  $pcpu
 	#vCPU : $vcpu
